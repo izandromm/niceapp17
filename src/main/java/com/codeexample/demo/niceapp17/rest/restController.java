@@ -17,11 +17,22 @@ public class restController {
 
     // constructor injection
     private Coach myCoach;
+    private Coach anotherCoach;
     @Autowired
-    public restController(@Qualifier("cricketCoach") Coach theCoach) {
+    public restController(
+            @Qualifier("cricketCoach") Coach theCoach,
+            @Qualifier("cricketCoach") Coach theAnotherCoach) {
+        System.out.println("In constructor: " + getClass().getSimpleName());
+        anotherCoach = theAnotherCoach;
         myCoach = theCoach;
     }
 
+    @GetMapping("/check")
+    public String check(){
+        // when coach class is singleton (the default mode),  mycoach and anothercoach are the same obj
+        // when cricketCoach is prototype, each instance is a new obj and the comparison returns false.
+        return "Comparing beans: myCoach == anotherCoach " + (myCoach == anotherCoach);
+    }
     //setter injection
     private Coach setterInjCoach;
     // qualifier specifies which component will be loaded by spring.
